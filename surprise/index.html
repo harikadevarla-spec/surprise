@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Rohith ❤️ Harika</title>
+<style>
+body {
+  margin:0;
+  font-family:Segoe UI,sans-serif;
+  background:linear-gradient(135deg,#ff6a88,#ff99ac);
+  color:white;
+  text-align:center;
+  overflow:hidden;
+}
+.page {
+  display:none;
+  padding:50px 20px;
+  max-width:720px;
+  margin:auto;
+  position:relative;
+  z-index:2;
+}
+.page.active { display:block; }
+
+h1 { font-size:2.6em; }
+
+.card {
+  background:rgba(255,255,255,0.15);
+  border-radius:20px;
+  padding:25px;
+  margin:20px 0;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+.heartBtn {
+  font-size:32px;
+  cursor:pointer;
+  margin-top:20px;
+}
+
+.heart {
+  position:fixed;
+  bottom:-20px;
+  font-size:20px;
+  animation:floatUp 6s linear infinite;
+  z-index:1;
+}
+@keyframes floatUp {
+  0% {transform:translateY(0);opacity:1;}
+  100% {transform:translateY(-110vh);opacity:0;}
+}
+
+canvas {
+  position:fixed;
+  top:0;left:0;
+  z-index:1;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+<canvas id="fireworks"></canvas>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <h1>Rohith ❤️ Harika</h1>
+  <p>My Naniluu 🐻 | My Nanna 🫶</p>
+  <div class="card">
+    <p>
+      oye nani… 🥺❤️<br><br>
+      I *coded* you one 💻💖<br><br>
+      Click the heart… and come inside my heart 😘
+    </p>
+  </div>
+  <div class="heartBtn" onclick="go(2)">❤️</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <h1>Our Story 💞</h1>
+  <div class="card">
+    <p>
+      We fell in love in <b>2023</b> 💫<br>
+      Not perfect… not easy… but *real* ❤️<br><br>  
+      But we never walk away 🤍<br><br>
+      Because love for me… is you, bangaram 🐻
+    </p>
+  </div>
+  <div class="heartBtn" onclick="go(3)">❤️</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <h1>What You Are To Me 🫶</h1>
+  <div class="card">
+    <p>
+      You are not just my boyfriend…<br>
+      You are my world ❤️<br><br>
+      When I say “Nanna”…<br>
+      I mean safety, madness, love, and forever 💍<br><br>
+      Nanna… I choose you even on the days we don’t understand each other 🤍
+    </p>
+  </div>
+  <div class="heartBtn" onclick="go(4)">❤️</div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <h1>My Promise 💍</h1>
+  <div class="card">
+    <p>
+      By God’s support <br>
+      We will marry in <b>2032</b> 💍❤️<br><br>
+      No matter what comes…<br>
+      I won’t leave your hand 🤝<br><br>
+      Now Naniluu… tell me 🥺❤️<br>
+      What do you feel about *me*?
+    </p>
+    <textarea placeholder="Type your feelings here Rohith..." style="width:90%;height:90px;border-radius:10px;border:none;padding:10px;"></textarea><br><br>
+    <button onclick="reply()">Send 💌</button>
+    <p id="replyText"></p>
+  </div>
+</div>
+
+<script>
+function go(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+}
+
+// reply
+function reply(){
+  document.getElementById("replyText").innerText =
+    "Your words are now in my heart forever, Rohith 🥺❤️";
+}
+
+// hearts
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(4+Math.random()*4)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},500);
+
+// fireworks
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+window.onresize=resize; resize();
+let fws=[];
+function Firework(x,y){
+  this.p=[];
+  for(let i=0;i<50;i++){
+    this.p.push({x,y,a:Math.random()*2*Math.PI,s:Math.random()*4+2,al:1});
+  }
+}
+function loop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  fws.forEach((fw,i)=>{
+    fw.p.forEach(p=>{
+      p.x+=Math.cos(p.a)*p.s;
+      p.y+=Math.sin(p.a)*p.s;
+      p.al-=0.02;
+      ctx.fillStyle=`rgba(255,255,255,${p.al})`;
+      ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fill();
+    });
+    fw.p=fw.p.filter(p=>p.al>0);
+    if(!fw.p.length)fws.splice(i,1);
+  });
+  requestAnimationFrame(loop);
+}
+loop();
+document.onclick=e=>fws.push(new Firework(e.clientX,e.clientY));
+</script>
+</body>
+</html>
